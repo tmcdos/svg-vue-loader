@@ -235,8 +235,16 @@ module.exports = function(content)
   const callback = this.async();
   const { svgo } = getOptions(this) || {};
 
-  svgToVue(content, {
-    svgoPath: this.resourcePath,
-    svgoConfig: svgo,
-  }).then(component => callback(null, component)).catch(callback);
+  try
+  {
+    const result = svgToVue(content, {
+      svgoPath: this.resourcePath,
+      svgoConfig: svgo,
+    });
+    callback(null, result);
+  }
+  catch (e)
+  {
+    callback();
+  }
 };
